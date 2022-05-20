@@ -1,7 +1,5 @@
 package com.felixsilva.cursomc.api.controller;
 
-import java.util.Optional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +26,8 @@ public class CategoriaController {
 	
 	@GetMapping("/{categoriaId}")
 	public ResponseEntity<Categoria> findByIdCategoria(@PathVariable Integer categoriaId){
-		Optional<Categoria> optCategoria = categoriaService.buscar(categoriaId);
-		if(optCategoria.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		Categoria categoria = optCategoria.get();
-		return ResponseEntity.status(HttpStatus.OK).body(categoria); 
+		Categoria obj = categoriaService.findById(categoriaId);
+		return ResponseEntity.status(HttpStatus.OK).body(obj); 
 	}
 	
 	
