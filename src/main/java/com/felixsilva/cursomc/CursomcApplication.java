@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.felixsilva.cursomc.domain.model.Categoria;
+import com.felixsilva.cursomc.domain.model.Cidade;
+import com.felixsilva.cursomc.domain.model.Estado;
 import com.felixsilva.cursomc.domain.model.Produto;
 import com.felixsilva.cursomc.domain.repository.CategoriaRepository;
 import com.felixsilva.cursomc.domain.repository.ProdutoRepository;
@@ -43,6 +45,13 @@ public class CursomcApplication implements CommandLineRunner {
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
+		
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade c1 = new Cidade(null, "Urberlância", est1);
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Campinas", est2);
 		
 //		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 //		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
