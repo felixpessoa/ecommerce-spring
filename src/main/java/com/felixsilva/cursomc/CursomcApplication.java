@@ -8,10 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.felixsilva.cursomc.domain.model.Categoria;
 import com.felixsilva.cursomc.domain.model.Cidade;
+import com.felixsilva.cursomc.domain.model.Cliente;
+import com.felixsilva.cursomc.domain.model.Endereco;
 import com.felixsilva.cursomc.domain.model.Estado;
 import com.felixsilva.cursomc.domain.model.Produto;
+import com.felixsilva.cursomc.domain.model.enums.TipoCliente;
 import com.felixsilva.cursomc.domain.repository.CategoriaRepository;
 import com.felixsilva.cursomc.domain.repository.CidadeRepository;
+import com.felixsilva.cursomc.domain.repository.ClienteRepository;
+import com.felixsilva.cursomc.domain.repository.EnderecoRepository;
 import com.felixsilva.cursomc.domain.repository.EstadoRepository;
 import com.felixsilva.cursomc.domain.repository.ProdutoRepository;
 
@@ -22,14 +27,19 @@ public class CursomcApplication implements CommandLineRunner {
 	private ProdutoRepository produtoRepository;
 	private CidadeRepository cidadeRepository;
 	private EstadoRepository estadoRepository;
+	private ClienteRepository clieteClienteRepository;
+	private EnderecoRepository enderecoRepository;
 	
 	public CursomcApplication(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
-			CidadeRepository cidadeRepository, EstadoRepository estadoRepository) {
+			CidadeRepository cidadeRepository, EstadoRepository estadoRepository, ClienteRepository clieteClienteRepository,
+			EnderecoRepository enderecoRepository) {
 		super();
 		this.categoriaRepository = categoriaRepository;
 		this.produtoRepository = produtoRepository;
 		this.cidadeRepository = cidadeRepository;
 		this.estadoRepository = estadoRepository;
+		this.clieteClienteRepository = clieteClienteRepository;
+		this.enderecoRepository = enderecoRepository;
 	}
 
 	public static void main(String[] args) {
@@ -71,6 +81,17 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jadim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clieteClienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
 	}
 
