@@ -1,6 +1,6 @@
 package com.felixsilva.cursomc.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 
@@ -16,16 +16,16 @@ import lombok.Setter;
 public class PagamentoComBoleto extends Pagamento{
 	private static final long serialVersionUID = 1L;
 	
-	@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
-	private LocalDateTime dataVencimento;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataVencimento;
 	
-	@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
-	private LocalDateTime dataPagamento;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataPagamento;
 	
 	public PagamentoComBoleto() {
 		super();
 	}
-	public PagamentoComBoleto(Integer pagamentoId, EstadoPagamento estador, Pedido pedido,LocalDateTime dataVencimento, LocalDateTime dataPagamento) {
+	public PagamentoComBoleto(Integer pagamentoId, EstadoPagamento estador, Pedido pedido,LocalDate dataVencimento, LocalDate dataPagamento) {
 		super(pagamentoId, estador, pedido);
 		this.dataVencimento = dataVencimento;
 		this.dataPagamento = dataPagamento;
