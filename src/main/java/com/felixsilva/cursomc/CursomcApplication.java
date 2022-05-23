@@ -12,6 +12,7 @@ import com.felixsilva.cursomc.domain.model.Cidade;
 import com.felixsilva.cursomc.domain.model.Cliente;
 import com.felixsilva.cursomc.domain.model.Endereco;
 import com.felixsilva.cursomc.domain.model.Estado;
+import com.felixsilva.cursomc.domain.model.ItemPedido;
 import com.felixsilva.cursomc.domain.model.Pagamento;
 import com.felixsilva.cursomc.domain.model.PagamentoComBoleto;
 import com.felixsilva.cursomc.domain.model.PagamentoComCartao;
@@ -24,6 +25,7 @@ import com.felixsilva.cursomc.domain.repository.CidadeRepository;
 import com.felixsilva.cursomc.domain.repository.ClienteRepository;
 import com.felixsilva.cursomc.domain.repository.EnderecoRepository;
 import com.felixsilva.cursomc.domain.repository.EstadoRepository;
+import com.felixsilva.cursomc.domain.repository.ItemPedidoRepository;
 import com.felixsilva.cursomc.domain.repository.PagamentoRepository;
 import com.felixsilva.cursomc.domain.repository.PedidoRepository;
 import com.felixsilva.cursomc.domain.repository.ProdutoRepository;
@@ -39,10 +41,12 @@ public class CursomcApplication implements CommandLineRunner {
 	private EnderecoRepository enderecoRepository;
 	private PedidoRepository pedidoRepository;
 	private PagamentoRepository pagamentoRepository;
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public CursomcApplication(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
 			CidadeRepository cidadeRepository, EstadoRepository estadoRepository, ClienteRepository clieteClienteRepository,
-			EnderecoRepository enderecoRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository) {
+			EnderecoRepository enderecoRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository,
+			ItemPedidoRepository itemPedidoRepository) {
 		super();
 		this.categoriaRepository = categoriaRepository;
 		this.produtoRepository = produtoRepository;
@@ -52,6 +56,7 @@ public class CursomcApplication implements CommandLineRunner {
 		this.enderecoRepository = enderecoRepository;
 		this.pedidoRepository = pedidoRepository;
 		this.pagamentoRepository = pagamentoRepository;
+		this.itemPedidoRepository = itemPedidoRepository;
 	}
 
 	public static void main(String[] args) {
@@ -119,6 +124,21 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 1, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
+		
 		
 	}
 
