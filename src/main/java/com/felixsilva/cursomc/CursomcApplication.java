@@ -1,5 +1,6 @@
 package com.felixsilva.cursomc;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
@@ -11,13 +12,20 @@ import com.felixsilva.cursomc.domain.model.Cidade;
 import com.felixsilva.cursomc.domain.model.Cliente;
 import com.felixsilva.cursomc.domain.model.Endereco;
 import com.felixsilva.cursomc.domain.model.Estado;
+import com.felixsilva.cursomc.domain.model.Pagamento;
+import com.felixsilva.cursomc.domain.model.PagamentoComBoleto;
+import com.felixsilva.cursomc.domain.model.PagamentoComCartao;
+import com.felixsilva.cursomc.domain.model.Pedido;
 import com.felixsilva.cursomc.domain.model.Produto;
+import com.felixsilva.cursomc.domain.model.enums.EstadoPagamento;
 import com.felixsilva.cursomc.domain.model.enums.TipoCliente;
 import com.felixsilva.cursomc.domain.repository.CategoriaRepository;
 import com.felixsilva.cursomc.domain.repository.CidadeRepository;
 import com.felixsilva.cursomc.domain.repository.ClienteRepository;
 import com.felixsilva.cursomc.domain.repository.EnderecoRepository;
 import com.felixsilva.cursomc.domain.repository.EstadoRepository;
+import com.felixsilva.cursomc.domain.repository.PagamentoRepository;
+import com.felixsilva.cursomc.domain.repository.PedidoRepository;
 import com.felixsilva.cursomc.domain.repository.ProdutoRepository;
 
 @SpringBootApplication
@@ -29,10 +37,12 @@ public class CursomcApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	private ClienteRepository clieteClienteRepository;
 	private EnderecoRepository enderecoRepository;
+	private PedidoRepository pedidoRepository;
+	private PagamentoRepository pagamentoRepository;
 	
 	public CursomcApplication(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
 			CidadeRepository cidadeRepository, EstadoRepository estadoRepository, ClienteRepository clieteClienteRepository,
-			EnderecoRepository enderecoRepository) {
+			EnderecoRepository enderecoRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository) {
 		super();
 		this.categoriaRepository = categoriaRepository;
 		this.produtoRepository = produtoRepository;
@@ -40,6 +50,8 @@ public class CursomcApplication implements CommandLineRunner {
 		this.estadoRepository = estadoRepository;
 		this.clieteClienteRepository = clieteClienteRepository;
 		this.enderecoRepository = enderecoRepository;
+		this.pedidoRepository = pedidoRepository;
+		this.pagamentoRepository = pagamentoRepository;
 	}
 
 	public static void main(String[] args) {
@@ -92,6 +104,21 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		clieteClienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+//		10:32 30/09/2017
+		
+		Pedido  ped1 = new Pedido(null, LocalDateTime.of(2017, 9, 30, 10, 32), cli1, e1);
+		Pedido ped2 = new Pedido(null, LocalDateTime.of(2017, 10, 10, 19, 35), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1); 
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PEDENTE, ped2, LocalDateTime.of(2017, 10, 20, 00, 00), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
 	}
 
