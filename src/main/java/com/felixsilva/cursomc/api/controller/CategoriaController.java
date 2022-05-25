@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,13 @@ public class CategoriaController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getCategoriaId()).toUri(); 
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping("/{categoriaId}")
+	public ResponseEntity<Void> update(@PathVariable Integer categoriaId, @RequestBody Categoria obj){
+		obj.setCategoriaId(categoriaId);
+		obj = categoriaService.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
 	
