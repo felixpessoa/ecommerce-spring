@@ -1,5 +1,6 @@
 package com.felixsilva.cursomc.domain.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,6 +44,10 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
 		}
+	}
+	
+	public List<Categoria> findAll(){
+		return categoriaRepository.findAll();
 	}
 
 }

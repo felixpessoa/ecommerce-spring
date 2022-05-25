@@ -1,6 +1,8 @@
 package com.felixsilva.cursomc.api.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.felixsilva.cursomc.domain.model.Categoria;
 import com.felixsilva.cursomc.domain.service.CategoriaService;
+import com.felixsilva.cursomc.dto.CategoriaDTO;
 
 @CrossOrigin("*")
 @RestController
@@ -56,6 +59,13 @@ public class CategoriaController {
 	public ResponseEntity<Categoria> delete(@PathVariable Integer categoriaId){
 		categoriaService.delete(categoriaId);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List<Categoria> list = categoriaService.findAll();
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	
