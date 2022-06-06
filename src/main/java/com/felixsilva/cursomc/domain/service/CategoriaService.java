@@ -10,6 +10,7 @@ import com.felixsilva.cursomc.domain.model.Categoria;
 import com.felixsilva.cursomc.domain.repository.CategoriaRepository;
 import com.felixsilva.cursomc.domain.service.exception.DataIntegrityException;
 import com.felixsilva.cursomc.domain.service.exception.ObjectNotFoundException;
+import com.felixsilva.cursomc.dto.CategoriaDTO;
 
 @Service
 public class CategoriaService {
@@ -48,6 +49,10 @@ public class CategoriaService {
 	
 	public List<Categoria> findAll(){
 		return categoriaRepository.findAll();
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getCategoriaId(), objDto.getNome());
 	}
 
 }
