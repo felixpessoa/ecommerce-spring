@@ -4,12 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-<<<<<<< HEAD
-import org.springframework.data.domain.Page;
-=======
 import javax.validation.Valid;
 
->>>>>>> branch 'main' of https://github.com/felixpessoa/ecommerce-spring.git
+import org.springframework.data.domain.Page;
+//github.com/felixpessoa/ecommerce-spring.git
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
