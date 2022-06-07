@@ -4,7 +4,12 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
 import org.springframework.data.domain.Page;
+=======
+import javax.validation.Valid;
+
+>>>>>>> branch 'main' of https://github.com/felixpessoa/ecommerce-spring.git
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,7 +48,8 @@ public class CategoriaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
+		Categoria obj = categoriaService.fromDTO(objDto);
 		obj = categoriaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getCategoriaId()).toUri(); 
@@ -51,7 +57,8 @@ public class CategoriaController {
 	}
 	
 	@PutMapping("/{categoriaId}")
-	public ResponseEntity<Void> update(@PathVariable Integer categoriaId, @RequestBody Categoria obj){
+	public ResponseEntity<Void> update(@PathVariable Integer categoriaId,@Valid @RequestBody CategoriaDTO objDto){
+		Categoria obj = categoriaService.fromDTO(objDto);
 		obj.setCategoriaId(categoriaId);
 		obj = categoriaService.update(obj);
 		return ResponseEntity.noContent().build();

@@ -13,6 +13,7 @@ import com.felixsilva.cursomc.domain.model.Categoria;
 import com.felixsilva.cursomc.domain.repository.CategoriaRepository;
 import com.felixsilva.cursomc.domain.service.exception.DataIntegrityException;
 import com.felixsilva.cursomc.domain.service.exception.ObjectNotFoundException;
+import com.felixsilva.cursomc.dto.CategoriaDTO;
 
 @Service
 public class CategoriaService {
@@ -56,6 +57,9 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return categoriaRepository.findAll(pageRequest);
+
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getCategoriaId(), objDto.getNome());
 	}
 
 }
