@@ -3,6 +3,7 @@ package com.felixsilva.cursomc.domain.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +19,9 @@ import com.felixsilva.cursomc.dto.CategoriaDTO;
 @Service
 public class CategoriaService {
 	
+	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public CategoriaService(CategoriaRepository categoriaRepository) {
-		super();
-		this.categoriaRepository = categoriaRepository;
-	}
 	
 	public Categoria findById(Integer id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);

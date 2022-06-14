@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,62 +32,53 @@ import com.felixsilva.cursomc.dto.ClienteNewDTO;
 @RequestMapping("/api/cliente")
 public class ClienteController {
 
+	@Autowired
 	private ClienteService clienteService;
 
-	public ClienteController(ClienteService clienteService) {
-		super();
-		this.clienteService = clienteService;
-	}
-	
-	
 	@GetMapping("/{clienteId}")
-	public ResponseEntity<Cliente> findByIdCliente(@PathVariable Integer clienteId){
+	public ResponseEntity<Cliente> findByIdCliente(@PathVariable Integer clienteId) {
 		Cliente obj = clienteService.findById(clienteId);
-		return ResponseEntity.status(HttpStatus.OK).body(obj); 
+		return ResponseEntity.status(HttpStatus.OK).body(obj);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto){
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 		Cliente obj = clienteService.fromDTO(objDto);
 		obj = clienteService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getClienteId()).toUri(); 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getClienteId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Void> update(@PathVariable Integer clienteId,@Valid @RequestBody ClienteDTO objDto){
+	public ResponseEntity<Void> update(@PathVariable Integer clienteId, @Valid @RequestBody ClienteDTO objDto) {
 		Cliente obj = clienteService.fromDTO(objDto);
 		obj.setClienteId(clienteId);
 		obj = clienteService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping("/{clienteId}")
-	public ResponseEntity<Cliente> delete(@PathVariable Integer clienteId){
+	public ResponseEntity<Cliente> delete(@PathVariable Integer clienteId) {
 		clienteService.delete(clienteId);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<ClienteDTO>> findAll(){
+	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = clienteService.findAll();
 		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	
+
 	@GetMapping("/page")
-	public ResponseEntity<Page<ClienteDTO>> findPage(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ClienteDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direcString){
+			@RequestParam(value = "direction", defaultValue = "ASC") String direcString) {
 		Page<Cliente> list = clienteService.findPage(page, linesPerPage, orderBy, direcString);
 		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	
-	
+
 }

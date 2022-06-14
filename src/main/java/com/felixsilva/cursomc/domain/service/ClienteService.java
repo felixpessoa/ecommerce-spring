@@ -3,6 +3,7 @@ package com.felixsilva.cursomc.domain.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,6 @@ import com.felixsilva.cursomc.domain.model.Cidade;
 import com.felixsilva.cursomc.domain.model.Cliente;
 import com.felixsilva.cursomc.domain.model.Endereco;
 import com.felixsilva.cursomc.domain.model.enums.TipoCliente;
-import com.felixsilva.cursomc.domain.repository.CidadeRepository;
 import com.felixsilva.cursomc.domain.repository.ClienteRepository;
 import com.felixsilva.cursomc.domain.repository.EnderecoRepository;
 import com.felixsilva.cursomc.domain.service.exception.DataIntegrityException;
@@ -25,16 +25,10 @@ import com.felixsilva.cursomc.dto.ClienteNewDTO;
 @Service
 public class ClienteService {
 
+	@Autowired
 	private ClienteRepository clienteRepository;
-	private CidadeRepository cidadeRepository;
+	@Autowired
 	private EnderecoRepository enderecoRepository;
-
-	public ClienteService(ClienteRepository clienteRepository, CidadeRepository cidadeRepository, EnderecoRepository enderecoRepository) {
-		super();
-		this.clienteRepository = clienteRepository;
-		this.cidadeRepository = cidadeRepository;
-		this.enderecoRepository = enderecoRepository;
-	}
 
 	public Cliente findById(Integer id) {
 		Optional<Cliente> obj = clienteRepository.findById(id);
@@ -77,11 +71,13 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteDTO obj) {
 		return new Cliente(obj.getClienteId(), obj.getNome(), obj.getEmail(), null, null);
 	}
-	
+
 	public Cliente fromDTO(ClienteNewDTO objDTO) {
-		Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()));
+		Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(),
+				TipoCliente.toEnum(objDTO.getTipo()));
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
-		Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
+		Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(),
+				objDTO.getBairro(), objDTO.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
 		cli.getTelefones().add(objDTO.getTelefone1());
 		if (objDTO.getTelefone2() != null) {

@@ -2,6 +2,7 @@ package com.felixsilva.cursomc.api.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,37 +23,27 @@ import com.felixsilva.cursomc.dto.ProdutoDTO;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
+	@Autowired
 	private ProdutoService produtoService;
 
-	public ProdutoController(ProdutoService produtoService) {
-		super();
-		this.produtoService = produtoService;
-	}
-	
-	
 	@GetMapping("/{produtoId}")
-	public ResponseEntity<Produto> findById(@PathVariable Integer produtoId){
+	public ResponseEntity<Produto> findById(@PathVariable Integer produtoId) {
 		Produto obj = produtoService.findById(produtoId);
-		return ResponseEntity.status(HttpStatus.OK).body(obj); 
+		return ResponseEntity.status(HttpStatus.OK).body(obj);
 	}
-	
-	
+
 	@GetMapping
-	public ResponseEntity<Page<ProdutoDTO>> findPage(
-			@RequestParam(value = "nome", defaultValue = "") String nome,
+	public ResponseEntity<Page<ProdutoDTO>> findPage(@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "categorias", defaultValue = "") String categorias,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direcString){
+			@RequestParam(value = "direction", defaultValue = "ASC") String direcString) {
 		String nomeDecided = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
 		Page<Produto> list = produtoService.search(nomeDecided, ids, page, linesPerPage, orderBy, direcString);
 		Page<ProdutoDTO> listDto = list.map(obj -> new ProdutoDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	
-	
-	
+
 }

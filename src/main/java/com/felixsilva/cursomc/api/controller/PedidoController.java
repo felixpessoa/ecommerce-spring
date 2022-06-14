@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,28 +24,21 @@ import com.felixsilva.cursomc.domain.service.PedidoService;
 @RequestMapping("/api/pedidos")
 public class PedidoController {
 
+	@Autowired
 	private PedidoService pedidoService;
 
-
-	public PedidoController(PedidoService pedidoService) {
-		super();
-		this.pedidoService = pedidoService;
-	}
-	
-	
 	@GetMapping("/{pedidoId}")
-	public ResponseEntity<Pedido> findByIdPedido(@PathVariable Integer pedidoId){
+	public ResponseEntity<Pedido> findByIdPedido(@PathVariable Integer pedidoId) {
 		Pedido obj = pedidoService.findById(pedidoId);
-		return ResponseEntity.status(HttpStatus.OK).body(obj); 
+		return ResponseEntity.status(HttpStatus.OK).body(obj);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
 		obj = pedidoService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getPedidoId()).toUri(); 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getPedidoId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	
+
 }

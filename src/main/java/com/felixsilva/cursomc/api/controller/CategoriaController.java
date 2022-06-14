@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 //github.com/felixpessoa/ecommerce-spring.git
 import org.springframework.http.HttpStatus;
@@ -31,60 +32,53 @@ import com.felixsilva.cursomc.dto.CategoriaDTO;
 @RequestMapping("/api/categoria")
 public class CategoriaController {
 
+	@Autowired
 	private CategoriaService categoriaService;
 
-	public CategoriaController(CategoriaService categoriaService) {
-		super();
-		this.categoriaService = categoriaService;
-	}
-	
-	
 	@GetMapping("/{categoriaId}")
-	public ResponseEntity<Categoria> findByIdCategoria(@PathVariable Integer categoriaId){
+	public ResponseEntity<Categoria> findByIdCategoria(@PathVariable Integer categoriaId) {
 		Categoria obj = categoriaService.findById(categoriaId);
-		return ResponseEntity.status(HttpStatus.OK).body(obj); 
+		return ResponseEntity.status(HttpStatus.OK).body(obj);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = categoriaService.fromDTO(objDto);
 		obj = categoriaService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getCategoriaId()).toUri(); 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getCategoriaId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@PutMapping("/{categoriaId}")
-	public ResponseEntity<Void> update(@PathVariable Integer categoriaId,@Valid @RequestBody CategoriaDTO objDto){
+	public ResponseEntity<Void> update(@PathVariable Integer categoriaId, @Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = categoriaService.fromDTO(objDto);
 		obj.setCategoriaId(categoriaId);
 		obj = categoriaService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping("/{categoriaId}")
-	public ResponseEntity<Categoria> delete(@PathVariable Integer categoriaId){
+	public ResponseEntity<Categoria> delete(@PathVariable Integer categoriaId) {
 		categoriaService.delete(categoriaId);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<CategoriaDTO>> findAll(){
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> list = categoriaService.findAll();
 		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	
+
 	@GetMapping("/page")
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direcString){
+			@RequestParam(value = "direction", defaultValue = "ASC") String direcString) {
 		Page<Categoria> list = categoriaService.findPage(page, linesPerPage, orderBy, direcString);
 		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
-	
+
 }
