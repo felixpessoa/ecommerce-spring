@@ -13,7 +13,7 @@ public class ProdutoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Integer produtoId;
-	private String nomeProduto;
+	private String nome;
 	private Double preco;
 	
 	public ProdutoDTO() {
@@ -23,7 +23,7 @@ public class ProdutoDTO implements Serializable{
 	public ProdutoDTO(Produto obj) {
 		super();
 		this.produtoId = obj.getProdutoId();
-		this.nomeProduto = obj.getNomeProduto();
+		this.nome = obj.getNome();
 		this.preco = obj.getPreco();
 	}
 	

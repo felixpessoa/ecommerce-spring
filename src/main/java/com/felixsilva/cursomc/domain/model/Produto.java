@@ -27,7 +27,7 @@ public class Produto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer produtoId;
-	private String nomeProduto;
+	private String nome;
 	private Double preco;
 	
 	@JsonIgnore
@@ -47,10 +47,10 @@ public class Produto implements Serializable {
 		super();
 	}
 
-	public Produto(Integer produtoId, String nomeProduto, Double preco) {
+	public Produto(Integer produtoId, String nome, Double preco) {
 		super();
 		this.produtoId = produtoId;
-		this.nomeProduto = nomeProduto;
+		this.nome = nome;
 		this.preco = preco;
 	}
 	

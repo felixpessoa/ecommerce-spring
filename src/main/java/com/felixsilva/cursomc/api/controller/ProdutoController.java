@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felixsilva.cursomc.api.controller.utils.URL;
-import com.felixsilva.cursomc.domain.model.Categoria;
 import com.felixsilva.cursomc.domain.model.Produto;
 import com.felixsilva.cursomc.domain.service.ProdutoService;
-import com.felixsilva.cursomc.dto.CategoriaDTO;
 import com.felixsilva.cursomc.dto.ProdutoDTO;
 
 @CrossOrigin("*")

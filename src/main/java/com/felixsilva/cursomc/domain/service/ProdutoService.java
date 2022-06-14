@@ -33,10 +33,10 @@ public class ProdutoService {
 				"Objeto não encontrado! id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 	
-	public Page<Produto> search(String nomeProduto, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
+	public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Categoria> categorias = categoriaRepository.findAllById(ids);
-		return produtoRepository.findDistinctByNomeProdutoContainingAndCategoriasIn(nomeProduto, categorias, pageRequest);
+		return produtoRepository.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 	}
 
 }
