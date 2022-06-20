@@ -5,11 +5,7 @@ import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.felixsilva.cursomc.domain.model.enums.EstadoPagamento;
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento{
@@ -23,6 +19,14 @@ public class PagamentoComCartao extends Pagamento{
 
 	public PagamentoComCartao(Integer pagamentoId, EstadoPagamento estador, Pedido pedido, Integer numeroDeParcelas) {
 		super(pagamentoId, estador, pedido);
+		this.numeroDeParcelas = numeroDeParcelas;
+	}
+	
+	public Integer getNumeroDeParcelas() {
+		return numeroDeParcelas;
+	}
+
+	public void setNumeroDeParcelas(Integer numeroDeParcelas) {
 		this.numeroDeParcelas = numeroDeParcelas;
 	}
 	
